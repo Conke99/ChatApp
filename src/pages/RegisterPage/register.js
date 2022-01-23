@@ -1,25 +1,35 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
 import React from "react";
 import { useState, useRef } from "react/cjs/react.development";
 
-const register = () => {
-  const userRef = useRef();
+const Register = () => {
+  const nameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
   const { signup } = useAuth();
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const history = useNavigate();
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
       return setError("Passwords do not match");
     }
-
-    signup(emailRef.current.value, passwordRef.current.value);
+    try {
+      setError("");
+      setLoading(true);
+      await signup(emailRef.current.value, passwordRef.current.value);
+      history("/home");
+    } catch {
+      console.log(error);
+      setError("Failed to create an account");
+    }
+    setLoading(false);
   }
   return (
     <div className="register">
@@ -27,13 +37,18 @@ const register = () => {
         <img src="/images/5015092.png" alt="Logo" />
         <h1>Msg Mi</h1>
         <h3>Register on Msg Mi</h3>
-        <form>
+        {error && (
+          <div className="error">
+            <span>{error}</span>
+          </div>
+        )}
+        <form onSubmit={handleSubmit}>
           <div>
             <img src="/images/register/user-regular.svg" alt="User" />
             <input
               type="text"
               placeholder="Enter your UserName"
-              ref={userRef}
+              ref={nameRef}
             />
           </div>
           <div>
@@ -61,7 +76,9 @@ const register = () => {
               ref={passwordConfirmRef}
             />
           </div>
-          <button>Submit</button>
+          <button disabled={loading} type="submit">
+            Submit
+          </button>
         </form>
         <div className="outerdiv__login">
           <p>
@@ -76,4 +93,4 @@ const register = () => {
   );
 };
 
-export default register;
+export default Register;

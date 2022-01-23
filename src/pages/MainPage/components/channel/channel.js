@@ -1,6 +1,9 @@
 import React from "react";
+import { useAuth } from "../../../../contexts/AuthContext";
 
-const channel = () => {
+export default function Channel() {
+  const { currentUser } = useAuth();
+
   return (
     <div className="Channel">
       <div className="frequency">
@@ -20,7 +23,7 @@ const channel = () => {
         <div className="inside__channel">
           <div className="avatar"></div>
           <div className="about__user">
-            <h3>User Name</h3>
+            <h3>{currentUser.email}</h3>
             <h4>Date</h4>
           </div>
           <div className="message"></div>
@@ -38,6 +41,4 @@ const channel = () => {
       </div>
     </div>
   );
-};
-
-export default channel;
+}

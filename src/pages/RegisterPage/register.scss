@@ -12,7 +12,7 @@
   justify-content: center;
   .register__content {
     width: 600px;
-    height: 800px;
+    height: 900px;
     border-radius: 12px;
     display: flex;
     flex-direction: column;
@@ -32,6 +32,22 @@
     color: white;
     font-size: 24px;
     font-family: "Nunito", sans-serif;
+  }
+  .error {
+    width: 400px;
+    height: 50px;
+    background-color: rgb(233, 79, 79);
+    margin: 10px 0 10px 0;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    span {
+      font-size: 21px;
+      font-weight: 600;
+      font-family: "Nunito", sans-serif;
+      color: white;
+    }
   }
   form {
     width: 400px;
