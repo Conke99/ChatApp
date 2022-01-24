@@ -1,7 +1,7 @@
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
-import React from "react";
 import { useState, useRef } from "react/cjs/react.development";
 
 const Register = () => {
@@ -10,6 +10,7 @@ const Register = () => {
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
   const { signup } = useAuth();
+  const { addUserName } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const history = useNavigate();
@@ -24,11 +25,15 @@ const Register = () => {
       setError("");
       setLoading(true);
       await signup(emailRef.current.value, passwordRef.current.value);
+      //
+      await addUserName(nameRef.current.value);
+      //
+
       history("/home");
     } catch {
-      console.log(error);
       setError("Failed to create an account");
     }
+
     setLoading(false);
   }
   return (

@@ -2,7 +2,8 @@ import React from "react";
 import { useAuth } from "../../../../contexts/AuthContext";
 
 export default function Channel() {
-  const { currentUser } = useAuth();
+  const { users } = useAuth();
+  // console.log(users);
 
   return (
     <div className="Channel">
@@ -23,7 +24,12 @@ export default function Channel() {
         <div className="inside__channel">
           <div className="avatar"></div>
           <div className="about__user">
-            <h3>{currentUser.email}</h3>
+            <div>
+              {users &&
+                users.map((user, i) => {
+                  return <h3 key={i}>{user.user}</h3>;
+                })}
+            </div>
             <h4>Date</h4>
           </div>
           <div className="message"></div>
