@@ -2,7 +2,7 @@ import React from "react";
 
 import Channel from "./components/channel/channel";
 
-const mainPage = () => {
+const MainPage = () => {
   return (
     <div className="main">
       <div className="Header">Color picker</div>
@@ -10,9 +10,12 @@ const mainPage = () => {
         <Channel />
         <div className="Channels">useri</div>
       </div>
-      <div className="Settings">Kanali</div>
+      <div className="Settings">
+        <div>Kanali</div>
+        <div>Tockic</div>
+      </div>
     </div>
   );
 };
 
-export default mainPage;
+export default MainPage;

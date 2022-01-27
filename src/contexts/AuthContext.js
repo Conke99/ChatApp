@@ -4,7 +4,14 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { collection, addDoc, getDocs, query } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  onSnapshot,
+  doc,
+} from "firebase/firestore";
 
 const AuthContext = React.createContext();
 
@@ -15,7 +22,9 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
-  const [users, setUsers] = useState([]);
+  const [user, setUser] = useState([]);
+  const [messages, setMessages] = useState([]);
+
   // users can Register
   function signup(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
@@ -24,32 +33,52 @@ export function AuthProvider({ children }) {
   function login(email, password) {
     return signInWithEmailAndPassword(auth, email, password);
   }
+
   // sending users in DB
   function addUserName(name) {
     return addDoc(collection(db, "users"), {
       user: name,
     });
   }
-  // ne radi
-  // async function readUserName() {
-  //   const user = await getDocs(collection(db, "users"));
-  // }
-
-  // radi ali ne renderuje
-
+  // catching users from DB
   useEffect(() => {
     const fetchUsers = async () => {
       const q = query(collection(db, "users"));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((item) => {
-        // console.log(item.data());
-        setUsers([...users, item.data()]);
+        setUser([...user, item.data()]);
       });
     };
     fetchUsers();
   }, []);
-  // console.log(users);
 
+  // showing messages
+  // showing messages
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      const querySnapshot = await getDocs(collection(db, "messages"));
+      const messages = [];
+      querySnapshot.forEach((doc) => {
+        messages.push(doc.data());
+      });
+      console.log("MESSAGES: ", messages);
+      setMessages(messages);
+    };
+
+    fetchMessages();
+  }, []);
+  // useEffect(() => {
+  //   const fetchMessages = async () => {
+  //     const q = query(collection(db, "messages"));
+  //     const unsubscribe = await onSnapshot(q, (querySnapshot) => {
+  //       querySnapshot.forEach((doc) => setMessages([messages, doc.data()]));
+  //     });
+  //   };
+  //   fetchMessages();
+  // }, []);
+
+  // i dont know what this is
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
@@ -64,7 +93,8 @@ export function AuthProvider({ children }) {
     login,
     signup,
     addUserName,
-    users,
+    user,
+    messages,
   };
 
   return (

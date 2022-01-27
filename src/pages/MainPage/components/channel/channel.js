@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../../../../contexts/AuthContext";
 
 export default function Channel() {
-  const { users } = useAuth();
-  // console.log(users);
+  const { user } = useAuth();
+  const { messages } = useAuth();
+  // const [msg, setMsg] = useState();
+
+  // async function handleSubmitMsg(e) {
+  //   e.preventDefault();
+
+  //   try {
+  //     await sendMessage(msg);
+  //   } catch {
+  //     console.log("err");
+  //   }
+  // }
 
   return (
     <div className="Channel">
@@ -22,17 +33,36 @@ export default function Channel() {
       </div>
       <div className="channel__content">
         <div className="inside__channel">
-          <div className="avatar"></div>
-          <div className="about__user">
-            <div>
-              {users &&
-                users.map((user, i) => {
-                  return <h3 key={i}>{user.user}</h3>;
-                })}
+          <div className="user__info">
+            <div className="avatar"></div>
+            <div className="about__user">
+              <div>
+                {user &&
+                  user.map((user, i) => {
+                    return <h3 key={i}>{user.user}</h3>;
+                  })}
+              </div>
+              <h4>Date</h4>
             </div>
-            <h4>Date</h4>
           </div>
-          <div className="message"></div>
+          <div className="message">
+            {messages &&
+              messages.map((userText, id) => {
+                return (
+                  <div key={id} className="aboutUser">
+                    <div className="avatar">
+                      {/* <img src="" alt="Avatar" /> */}
+                    </div>
+                    <div className="username_message">
+                      <h4>{userText.user}</h4>
+                      <div>
+                        <p>{userText.text}</p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
         </div>
       </div>
       <div className="user__message">
